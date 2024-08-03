@@ -18,6 +18,18 @@ def get_ua():
 # 发送请求
 def get_response(_url: str) -> Response:
     try:
+
+        # 隧道域名:端口号
+        tunnel = "z744.kdltps.com:15818"
+
+        # 用户名密码方式
+        username = "t12266480273729"
+        password = "mapb2njr"
+        proxies = {
+            "http": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": tunnel},
+            "https": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": tunnel}
+        }
+
         cookies_and_headers = random.choice(cookies_and_headers_list)
         a_cookies = cookies_and_headers.get('cookies')
         a_headers = headers
@@ -62,7 +74,7 @@ def get_response(_url: str) -> Response:
         a_headers['accept-language'] \
             = f'zh-CN,zh;q={str(random.choice(range(6, 9)) / 10)},en;q={str(random.choice(range(6, 9)) / 10)},en-GB;q={str(random.choice(range(6, 9)) / 10)},en-US;q={str(random.choice(range(6, 9)) / 10)}'
         requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = "TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:" + get_tls()
-        _response = requests.get(_url, headers=a_headers, cookies=a_cookies, timeout=30)
+        _response = requests.get(_url, headers=a_headers, cookies=a_cookies, timeout=30, proxies=proxies)
         return _response
     except Exception as e:
         return str(e)

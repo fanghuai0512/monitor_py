@@ -11,7 +11,7 @@ def get_biz_product(item):
     db = item
     db.connect()
     try:
-        result = db.execute_read_query("SELECT * FROM tb_biz_product where monitor = 1 limit 0,2")
+        result = db.execute_read_query("SELECT * FROM tb_biz_product where monitor = 1")
         return result
     except Exception as e:
         return None
@@ -45,20 +45,16 @@ def worker_thread(db):
                 result = future.result()
                 # print(f'ASIN: {result[0]} rep {result[1]}')
                 url = "https://www.amazon.com/dp/" + item["data"]["asin"] + "/ref=olp-opf-redir?aod=1&condition=new"
-                print(url)
                 if result[2]==1:
                     data = DetailParse(url=url, response=result[1].text).run_parse()
-                    print(data[0]["data"])
-                    address = re.search('id="glow-ingress-line2"[\\s\\S]+</a>', result[1].text).group()
-                    # print(address)
-                    outOfStock = re.search('id="outOfStock"[\\s\\S]+</a>', result[1].text).group()
-                    # print(outOfStock)
-
                     db.execute_query("INSERT INTO tb_monitor_product_log (product_id,sell_price,collect_status,collect_msg,sync_status) VALUES (%s, %s, %s, %s, %s)", (item["data"]["id"], data[0]["data"]["finalPurchasePrice"],1,"",0))
                 elif result[2]==2:
                     db.execute_query("INSERT INTO tb_monitor_product_log (product_id,sell_price,collect_status,collect_msg,sync_status) VALUES (%s, %s, %s, %s, %s)",(item["data"]["id"], "", 2, result[1], 0))
             except Exception as exc:
-                print(f'ASIN: {item} generated an exception: {exc}')
+                # print(f'ASIN: {item} generated an exception: {exc}')
+                db.execute_query(
+                    "INSERT INTO tb_monitor_product_log (product_id,sell_price,collect_status,collect_msg,sync_status) VALUES (%s, %s, %s, %s, %s)",
+                    (item["data"]["id"], "", 2, exc, 0))
             finally:
                 db.close_connection()
 

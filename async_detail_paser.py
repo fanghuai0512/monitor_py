@@ -125,6 +125,9 @@ class DetailParse:
 
                 except json.JSONDecodeError as e:
                     logging.info("data_to_return JSON解析错误:", e)
+                except UnicodeEncodeError as e:
+                    logging.info("编码错误:", e)
+
             else:
                 logging.info("未找到包含dataToReturn变量的<script>标签")
 

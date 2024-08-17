@@ -70,5 +70,5 @@ def worker_thread(db):
         logging.info(f"总采集时长：{execution_time}秒")
 
 if __name__ == '__main__':
-    db = Database('121.37.97.10', 'root', '123456', 'oms', 3307)
+    db = Database('121.37.97.10', 'oms', 'iXZ2mKcz7abMiS7M', 'oms', 3306)
     worker_thread(db)

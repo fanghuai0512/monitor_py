@@ -14,7 +14,7 @@ def get_biz_product(item):
     db = item
     db.connect()
     try:
-        result = db.execute_read_query("select DISTINCT asin from tb_biz_product where monitor = 1 limit 0,10000")
+        result = db.execute_read_query("select DISTINCT asin from tb_biz_product where monitor = 1")
         return result
     except Exception as e:
         return None

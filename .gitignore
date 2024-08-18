@@ -9,6 +9,7 @@ __pycache__/
 .jpg
 .pyc
 .log
+.iml
 
 # Distribution / packaging
 .Python
@@ -147,4 +148,5 @@ cython_debug/
 
 # Ignore .idea directory
 .idea/
+.idea/**
 /views/

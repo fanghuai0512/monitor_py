@@ -50,7 +50,6 @@ def worker_thread(db):
                 # print(f'ASIN: {result[0]} rep {result[1]}')
                 url = "https://www.amazon.com/dp/" + item["data"]["asin"] + "/ref=olp-opf-redir?aod=1&condition=new"
                 if result[2]==1:
-                    print(result[1])
                     data = DetailParse(url=url, response=result[1].text).run_parse()
                     db.execute_query("INSERT INTO tb_monitor_product_log (sell_price,collect_status,collect_msg,sync_status,asin) VALUES (%s, %s, %s, %s, %s)", (data[0]["data"]["finalPurchasePrice"],1,"",0,item["data"]["asin"]))
                 elif result[2]==0:
@@ -60,7 +59,7 @@ def worker_thread(db):
                 traceback.print_exc()
                 db.execute_query(
                     "INSERT INTO tb_monitor_product_log (collect_status,collect_msg,sync_status,asin) VALUES (%s, %s, %s, %s)",
-                    (2, item["data"]["asin"]+":"+str(exc), 0,item["data"]["asin"]))
+                    (2, item["data"]["asin"]+":"+str(traceback.print_exc()), 0,item["data"]["asin"]))
             finally:
                 db.close_connection()
         # 记录结束时间
@@ -68,6 +67,7 @@ def worker_thread(db):
         # 计算执行时间
         execution_time = end_time - start_time
         logging.info(f"总采集时长：{execution_time}秒")
+
 
 if __name__ == '__main__':
     db = Database('121.37.97.10', 'oms', 'iXZ2mKcz7abMiS7M', 'oms', 3306)

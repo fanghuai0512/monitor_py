@@ -20,9 +20,12 @@ def get_response(_url: str) -> Response:
     try:
 
         # 隧道域名:端口号
-        tunnel = "x742.kdltps.com:15818"
+        # tunnel = "z744.kdltps.com:15818"
+        tunnel = "x741.kdltps.com:15818"
 
         # 用户名密码方式
+        # username = "t12266480273729"
+        # password = "mapb2njr"
         username = "t12386216429413"
         password = "e1gy8z82"
         proxies = {

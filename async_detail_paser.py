@@ -200,7 +200,7 @@ class DetailParse:
         Get variant information
         """
         try:
-            variant_json_str = re.search("jQuery.parseJSON('(.+?)');", self.response).group(1).strip()
+            variant_json_str = re.search("jQuery.parseJSON\\('(.+?)'\\);", self.response).group(1).strip()
         except:
             return []
         try:
